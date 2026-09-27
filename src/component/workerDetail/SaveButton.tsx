@@ -19,7 +19,7 @@ const SaveButton = ({workout}:{workout:iWorkout}) => {
       
         setSaveLater([...saveLater,workout])
 
-        toast.success(`you have add "${workout}"`);
+        toast.success(`Added to saved `);
         
     };
     return  <button className="flex items-center gap-2 rounded-md bg-[#b6ff00] px-3 py-2 text-[8px] font-bold text-black"onClick={()=>handleSaveLater()}>

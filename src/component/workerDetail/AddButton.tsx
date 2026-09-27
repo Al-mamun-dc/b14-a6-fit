@@ -19,7 +19,7 @@ const AddButton = ({workout}:{workout:iWorkout}) => {
       
         setTodaysPlan([...todaysPlan,workout])
 
-        toast.success(`you have add "${workout.name}"`);
+        toast.success(`Added to today's plan`);
         
     };
     return  <button className="flex items-center gap-2 rounded-md bg-[#b6ff00] px-3 py-2 text-[8px] font-bold text-black"onClick={()=>handleTodaysPlan()}>

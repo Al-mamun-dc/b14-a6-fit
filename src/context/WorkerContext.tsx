@@ -1,19 +1,41 @@
 "use client";
 
 import React, { createContext, useState } from 'react';
- export const WorkerContext=createContext({})
-const WorkerProvider = ({children}:{children:React.ReactNode}) => {
-    const[todaysPlan,setTodaysPlan]=useState([]);
-    const[saveLater,setSaveLater]=useState([]);
+import { iWorkout } from '@/types/worker.type';
 
+// Context এর Type
+interface IWorkerContext {
+    todaysPlan: iWorkout[];
+    setTodaysPlan: React.Dispatch<React.SetStateAction<iWorkout[]>>;
+    saveLater: iWorkout[];
+    setSaveLater: React.Dispatch<React.SetStateAction<iWorkout[]>>;
+}
 
-     const sharedData={
+// Context তৈরি
+export const WorkerContext = createContext<IWorkerContext>({
+    todaysPlan: [],
+    setTodaysPlan: () => {},
+    saveLater: [],
+    setSaveLater: () => {},
+});
+
+const WorkerProvider = ({ children }: { children: React.ReactNode }) => {
+
+    const [todaysPlan, setTodaysPlan] = useState<iWorkout[]>([]);
+    const [saveLater, setSaveLater] = useState<iWorkout[]>([]);
+
+    const sharedData = {
         todaysPlan,
         setTodaysPlan,
         saveLater,
         setSaveLater,
-     };
-    return < WorkerContext.Provider value={sharedData}>{children}</WorkerContext.Provider>
+    };
+
+    return (
+        <WorkerContext.Provider value={sharedData}>
+            {children}
+        </WorkerContext.Provider>
+    );
 };
 
 export default WorkerProvider;
