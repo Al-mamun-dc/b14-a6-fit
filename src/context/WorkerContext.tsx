@@ -3,7 +3,7 @@
 import React, { createContext, useState } from 'react';
 import { iWorkout } from '@/types/worker.type';
 
-// Context এর Type
+
 interface IWorkerContext {
     todaysPlan: iWorkout[];
     setTodaysPlan: React.Dispatch<React.SetStateAction<iWorkout[]>>;
@@ -11,7 +11,7 @@ interface IWorkerContext {
     setSaveLater: React.Dispatch<React.SetStateAction<iWorkout[]>>;
 }
 
-// Context তৈরি
+
 export const WorkerContext = createContext<IWorkerContext>({
     todaysPlan: [],
     setTodaysPlan: () => {},

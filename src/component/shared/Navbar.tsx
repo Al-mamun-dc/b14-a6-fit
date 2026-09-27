@@ -1,30 +1,36 @@
+"use client";
 
 import Image from "next/image";
-import logo from "@/assets/logo.png"
+import logo from "@/assets/logo.png";
 import Link from "next/link";
-
+import { useContext } from "react";
+import { WorkerContext } from "@/context/WorkerContext";
 
 const Navbar = () => {
-  const link=(
+  const { todaysPlan, saveLater } = useContext(WorkerContext);
+
+  const link = (
     <>
-    <Link href="/worker">Workouts</Link>
-     <Link href="/worker">My Plan</Link>
+      <Link href="/workers">Workouts</Link>
+      <Link href="/workerlist">My Plan</Link>
     </>
-  )
-    
-  
+  );
 
   return (
     <nav className="bg-[#08090b] shadow-sm">
-      <div className="navbar container mx-auto text-white  border-b border-gray-700 px-6">
+      <div className="navbar container mx-auto border-b border-gray-700 px-6 text-white">
+
+        {/* ================= Navbar Start ================= */}
 
         <div className="navbar-start">
 
+          {/* Mobile Menu */}
           <div className="dropdown">
+
             <div
               tabIndex={0}
               role="button"
-              className="btn btn-ghost lg:hidden text-white"
+              className="btn btn-ghost text-white lg:hidden"
             >
               <svg
                 aria-label="Menu"
@@ -45,13 +51,17 @@ const Navbar = () => {
 
             <ul
               tabIndex={-1}
-              className="menu menu-sm dropdown-content bg-[#111315] text-white rounded-box z-1 mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content z-1 mt-3 w-52 rounded-box bg-[#111315] p-2 text-white shadow"
             >
               {link}
             </ul>
+
           </div>
 
-          <div className='flex gap-2 items-center'>
+
+          {/* Logo */}
+          <div className="flex items-center gap-2">
+
             <Image
               src={logo}
               alt="Logo"
@@ -59,46 +69,77 @@ const Navbar = () => {
               height={28}
             />
 
-            <span className="font-bold text-lg">
+            <span className="text-lg font-bold">
               FITLOG
             </span>
+
           </div>
 
         </div>
 
+
+        {/* ================= Navbar Center ================= */}
+
         <div className="navbar-center hidden lg:flex">
+
           <ul className="menu menu-horizontal gap-2">
 
+            {/* Workouts */}
             <li>
-              <Link href="/workers" className="bg-[#172800] text-[#b6ff00] rounded-full px-5">
+              <Link
+                href="/workers"
+                className="rounded-full bg-[#172800] px-5 text-[#b6ff00]"
+              >
                 Workouts
               </Link>
-          </li>
+            </li>
 
+
+            {/* My Plan */}
             <li>
-              <Link href="/workerlist" className="text-gray-400 hover:text-white">
+              <Link
+                href="/workerlist"
+                className="text-gray-400 hover:text-white"
+              >
                 My Plan
               </Link>
             </li>
 
           </ul>
+
         </div>
+
+
+        {/* ================= Navbar End ================= */}
 
         <div className="navbar-end gap-5">
 
-          <button className="text-sm text-gray-300 hover:text-white flex items-center gap-2">
+          {/* Plan Count */}
+          <Link
+            href="/workerlist"
+            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white"
+          >
             Plan
-            <span className="bg-[#b6ff00] text-black text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">
-              0
-            </span>
-          </button>
 
-          <button className="text-sm text-gray-300 hover:text-white flex items-center gap-2">
-            Saved
-            <span className="border  text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">
-              0
+            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#b6ff00] text-xs font-bold text-black">
+              {todaysPlan.length}
             </span>
-          </button>
+
+          </Link>
+
+
+          {/* Saved Count */}
+          <Link
+            href="/workerlist"
+            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white"
+          >
+            Saved
+
+            <span className="flex h-4 w-4 items-center justify-center rounded-full border border-gray-500 text-xs font-bold text-white">
+              {saveLater.length}
+            </span>
+
+          </Link>
 
         </div>
 
