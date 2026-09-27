@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useState } from 'react';
-const WorkerContext=createContext({})
+ export const WorkerContext=createContext({})
 const WorkerProvider = ({children}:{children:React.ReactNode}) => {
     const[todaysPlan,setTodaysPlan]=useState([]);
     const[saveLater,setSaveLater]=useState([]);

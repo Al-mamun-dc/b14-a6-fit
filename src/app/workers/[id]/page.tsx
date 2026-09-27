@@ -1,4 +1,5 @@
 import AddButton from '@/component/workerDetail/AddButton';
+import SaveButton from '@/component/workerDetail/SaveButton';
 import { iWorkout } from '@/types/worker.type';
 import Image from 'next/image';
 import React from 'react';
@@ -28,7 +29,7 @@ const WorkerDetailsPage = async ({
     const workoutData = await getWorkout();
 
     const workout = workoutData.find(
-        (workout: iWorkout) => workout.id === Number(id)
+        (workout: iWorkout) => String(workout.id) === String(id)
     ) as iWorkout;
 
     return (
@@ -178,12 +179,9 @@ const WorkerDetailsPage = async ({
                         {/* BUTTONS */}
                         <div className="mt-5 flex gap-2">
 
-                           <AddButton/>
+                           <AddButton workout={workout}/>
 
-                            <button className="flex items-center gap-2 rounded-md border border-gray-700 px-3 py-2 text-[8px] text-gray-300">
-                                <span>□</span>
-                                Save for later
-                            </button>
+                            <SaveButton workout={workout}/>
 
                         </div>
 

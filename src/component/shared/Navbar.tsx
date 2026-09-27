@@ -76,7 +76,7 @@ const Navbar = () => {
           </li>
 
             <li>
-              <Link href="" className="text-gray-400 hover:text-white">
+              <Link href="/workerlist" className="text-gray-400 hover:text-white">
                 My Plan
               </Link>
             </li>
