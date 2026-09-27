@@ -5,6 +5,7 @@ import { iWorkout } from "@/types/worker.type";
 import React, { useContext, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { toast } from "react-toastify";
 
 const WorkerList = () => {
     const {
@@ -68,31 +69,42 @@ const WorkerList = () => {
                 );
             }
 
-            // Sets
-            if (sortBy === "sets") {
+            // Rating
+            if (sortBy === "rating") {
                 return (
-                    Number(a.sets) -
-                    Number(b.sets)
+                    Number(a.rating) -
+                    Number(b.rating)
                 );
-            }
-
-            // Reps
-            if (sortBy === "reps") {
-                const repsA = parseInt(
-                    String(a.reps).match(/\d+/)?.[0] || "0"
-                );
-
-                const repsB = parseInt(
-                    String(b.reps).match(/\d+/)?.[0] || "0"
-                );
-
-                return repsA - repsB;
             }
 
             return 0;
         });
 
         return sortedWorkouts;
+    };
+
+    // =========================
+    // Mark as Done
+    // =========================
+
+    const markAsDone = (id: number) => {
+        const workout = todaysPlan.find(
+            (item) => item.id === id
+        );
+
+        setTodaysPlan(
+            todaysPlan.filter(
+                (item) => item.id !== id
+            )
+        );
+
+        if (workout) {
+            toast.success(
+                `${workout.name} marked as done!`
+            );
+        } else {
+            toast.success("Workout marked as done!");
+        }
     };
 
     // =========================
@@ -104,17 +116,37 @@ const WorkerList = () => {
         type: "today" | "saved"
     ) => {
         if (type === "today") {
+            const workout = todaysPlan.find(
+                (item) => item.id === id
+            );
+
             setTodaysPlan(
                 todaysPlan.filter(
                     (workout) => workout.id !== id
                 )
             );
+
+            if (workout) {
+                toast.success(
+                    `${workout.name} removed from today's plan!`
+                );
+            }
         } else {
+            const workout = saveLater.find(
+                (item) => item.id === id
+            );
+
             setSaveLater(
                 saveLater.filter(
                     (workout) => workout.id !== id
                 )
             );
+
+            if (workout) {
+                toast.success(
+                    `${workout.name} removed from saved workouts!`
+                );
+            }
         }
     };
 
@@ -169,11 +201,16 @@ const WorkerList = () => {
                         <span>
                             ↗ {workout.reps} reps
                         </span>
+
+                        <span>
+                            ★ {workout.rating}
+                        </span>
                     </div>
                 </div>
 
                 {/* Buttons */}
                 <div className="flex shrink-0 items-center gap-2">
+
                     <Link
                         href={`/workers/${workout.id}`}
                         className="btn btn-xs rounded-full border-gray-700 bg-[#20232d] text-white"
@@ -185,10 +222,7 @@ const WorkerList = () => {
                     {type === "today" && (
                         <button
                             onClick={() =>
-                                removeWorkout(
-                                    workout.id,
-                                    "today"
-                                )
+                                markAsDone(workout.id)
                             }
                             className="btn btn-xs rounded-full border-none bg-lime-400 text-black"
                         >
@@ -205,9 +239,11 @@ const WorkerList = () => {
                             )
                         }
                         className="px-2 text-gray-400 transition hover:text-red-400"
+                        title="Remove workout"
                     >
                         ✕
                     </button>
+
                 </div>
             </div>
         );
@@ -234,12 +270,8 @@ const WorkerList = () => {
 
             <div className="container mx-auto px-6 py-10">
 
-                {/* =========================
-                    Header
-                ========================= */}
-
+                {/* Header */}
                 <div className="mb-6">
-
                     <h2 className="text-2xl font-bold">
                         MY PLAN
                     </h2>
@@ -247,17 +279,11 @@ const WorkerList = () => {
                     <p className="mt-2 text-xs text-gray-500">
                         Cap of five lifts for today. Finish them, then load more.
                     </p>
-
                 </div>
 
-
-                {/* =========================
-                    Stats
-                ========================= */}
-
+                {/* Stats */}
                 <div className="mb-5 grid grid-cols-3 gap-4 rounded-xl border border-gray-800 bg-[#14161f] p-5">
 
-                    {/* Exercises */}
                     <div>
                         <p className="text-xs text-gray-400">
                             Exercises
@@ -268,8 +294,6 @@ const WorkerList = () => {
                         </h2>
                     </div>
 
-
-                    {/* Minutes */}
                     <div className="border-l border-gray-800 pl-5">
                         <p className="text-xs text-gray-400">
                             Minutes
@@ -280,8 +304,6 @@ const WorkerList = () => {
                         </h2>
                     </div>
 
-
-                    {/* Calories */}
                     <div className="border-l border-gray-800 pl-5">
                         <p className="text-xs text-gray-400">
                             Calories
@@ -294,20 +316,14 @@ const WorkerList = () => {
 
                 </div>
 
-
-                {/* =========================
-                    Tabs + Sort
-                ========================= */}
-
+                {/* Tabs + Sort */}
                 <div className="mb-4">
 
-                    {/* Tabs Header */}
                     <div className="flex items-center justify-between border-b border-gray-800">
 
                         {/* Tabs */}
                         <div className="flex gap-6">
 
-                            {/* Today's Plan */}
                             <button
                                 onClick={() =>
                                     setActiveTab("today")
@@ -318,11 +334,9 @@ const WorkerList = () => {
                                         : "text-gray-500 hover:text-gray-300"
                                 }`}
                             >
-                                Today&apos;s  Plan
+                                Today&apos;s Plan
                             </button>
 
-
-                            {/* Saved */}
                             <button
                                 onClick={() =>
                                     setActiveTab("saved")
@@ -338,7 +352,6 @@ const WorkerList = () => {
 
                         </div>
 
-
                         {/* Sort By */}
                         <div className="mb-2 flex items-center gap-3">
 
@@ -346,58 +359,54 @@ const WorkerList = () => {
                                 Sort By
                             </span>
 
-                            <select
-                                value={sortBy}
-                                onChange={(e) =>
-                                    setSortBy(
-                                        e.target.value
-                                    )
-                                }
-                                className="h-9 w-32 cursor-pointer rounded-lg border border-gray-700 bg-[#15171f] px-3 text-sm text-white outline-none focus:border-lime-400"
-                            >
-                                <option
-                                    value="duration"
-                                    className="bg-[#15171f] text-white"
-                                >
-                                    Duration
-                                </option>
+                            <div className="relative">
 
-                                <option
-                                    value="calories"
-                                    className="bg-[#15171f] text-white"
+                                <select
+                                    value={sortBy}
+                                    onChange={(e) =>
+                                        setSortBy(
+                                            e.target.value
+                                        )
+                                    }
+                                    className="h-9 w-32 cursor-pointer appearance-none rounded-lg border border-gray-700 bg-[#15171f] px-3 pr-8 text-sm text-white outline-none focus:border-lime-400"
                                 >
-                                    Calories
-                                </option>
+                                    <option
+                                        value="duration"
+                                        className="bg-[#15171f] text-white"
+                                    >
+                                        Duration
+                                    </option>
 
-                                <option
-                                    value="sets"
-                                    className="bg-[#15171f] text-white"
-                                >
-                                    Sets
-                                </option>
+                                    <option
+                                        value="calories"
+                                        className="bg-[#15171f] text-white"
+                                    >
+                                        Calories
+                                    </option>
 
-                                <option
-                                    value="reps"
-                                    className="bg-[#15171f] text-white"
-                                >
-                                    Reps
-                                </option>
-                            </select>
+                                    <option
+                                        value="rating"
+                                        className="bg-[#15171f] text-white"
+                                    >
+                                        Rating
+                                    </option>
+                                </select>
+
+                                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">
+                                    ▼
+                                </span>
+
+                            </div>
 
                         </div>
 
                     </div>
 
-
-                    {/* =========================
-                        Today's Plan
-                    ========================= */}
-
+                    {/* Today's Plan */}
                     {activeTab === "today" && (
                         <div className="pt-4">
 
                             {sortedTodayPlan.length > 0 ? (
-
                                 sortedTodayPlan.map(
                                     (
                                         workout: iWorkout,
@@ -409,9 +418,7 @@ const WorkerList = () => {
                                             index
                                         )
                                 )
-
                             ) : (
-
                                 <div className="flex min-h-62.5 flex-col items-center justify-center rounded-xl border border-gray-800 text-center">
 
                                     <h3 className="text-lg font-bold">
@@ -430,22 +437,16 @@ const WorkerList = () => {
                                     </Link>
 
                                 </div>
-
                             )}
 
                         </div>
                     )}
 
-
-                    {/* =========================
-                        Saved
-                    ========================= */}
-
+                    {/* Saved */}
                     {activeTab === "saved" && (
                         <div className="pt-4">
 
                             {sortedSavedPlan.length > 0 ? (
-
                                 sortedSavedPlan.map(
                                     (
                                         workout: iWorkout,
@@ -457,9 +458,7 @@ const WorkerList = () => {
                                             index
                                         )
                                 )
-
                             ) : (
-
                                 <div className="flex min-h-62.5 flex-col items-center justify-center rounded-xl border border-gray-800 text-center">
 
                                     <h3 className="text-lg font-bold">
@@ -478,7 +477,6 @@ const WorkerList = () => {
                                     </Link>
 
                                 </div>
-
                             )}
 
                         </div>
