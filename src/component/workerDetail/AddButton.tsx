@@ -3,6 +3,7 @@ import { WorkerContext } from '@/context/WorkerContext';
 import { iWorkout } from '@/types/worker.type';
 
 import React, { useContext } from 'react';
+import { toast } from 'react-toastify';
 
 
 const AddButton = ({workout}:{workout:iWorkout}) => {
@@ -18,7 +19,7 @@ const AddButton = ({workout}:{workout:iWorkout}) => {
       
         setTodaysPlan([...todaysPlan,workout])
 
-        alert(`you have add "${workout}"`);
+        toast.success(`you have add "${workout.name}"`);
         
     };
     return  <button className="flex items-center gap-2 rounded-md bg-[#b6ff00] px-3 py-2 text-[8px] font-bold text-black"onClick={()=>handleTodaysPlan()}>
