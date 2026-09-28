@@ -4,24 +4,25 @@ import Image from "next/image";
 import logo from "@/assets/logo.png";
 import Link from "next/link";
 import { useContext } from "react";
+import { usePathname } from "next/navigation";
 import { WorkerContext } from "@/context/WorkerContext";
 
 const Navbar = () => {
   const { todaysPlan, saveLater } = useContext(WorkerContext);
+  const pathname = usePathname();
 
   const link = (
     <>
-      <Link href="/workers">Workouts</Link>
-      <Link href="/workerlist">My Plan</Link>
+      <Link href="/">Workouts</Link>
+      <Link href="/my-plan">My Plan</Link>
     </>
   );
 
   return (
     <nav className="bg-[#08090b] shadow-sm">
-      <div className="navbar container mx-auto border-b border-gray-700 px-6 text-white">
+      <div className="navbar container mx-auto border-b border-gray-700 px-4 text-white sm:px-6">
 
-        {/* ================= Navbar Start ================= */}
-
+        {/* Navbar Start */}
         <div className="navbar-start">
 
           {/* Mobile Menu */}
@@ -58,10 +59,8 @@ const Navbar = () => {
 
           </div>
 
-
           {/* Logo */}
-          <div className="flex items-center gap-2">
-
+          <Link href="/" className="flex items-center gap-2">
             <Image
               src={logo}
               alt="Logo"
@@ -72,14 +71,11 @@ const Navbar = () => {
             <span className="text-lg font-bold">
               FITLOG
             </span>
-
-          </div>
+          </Link>
 
         </div>
 
-
-        {/* ================= Navbar Center ================= */}
-
+        {/* Navbar Center */}
         <div className="navbar-center hidden lg:flex">
 
           <ul className="menu menu-horizontal gap-2">
@@ -87,19 +83,26 @@ const Navbar = () => {
             {/* Workouts */}
             <li>
               <Link
-                href="/workers"
-                className="rounded-full bg-[#172800] px-5 text-[#b6ff00]"
+                href="/"
+                className={
+                  pathname === "/"
+                    ? "rounded-full bg-[#172800] px-5 text-[#b6ff00]"
+                    : "text-gray-400 hover:text-white"
+                }
               >
                 Workouts
               </Link>
             </li>
 
-
             {/* My Plan */}
             <li>
               <Link
                 href="/workerlist"
-                className="text-gray-400 hover:text-white"
+                className={
+                  pathname === "/my-plan"
+                    ? "rounded-full bg-[#172800] px-5 text-[#b6ff00]"
+                    : "text-gray-400 hover:text-white"
+                }
               >
                 My Plan
               </Link>
@@ -109,36 +112,31 @@ const Navbar = () => {
 
         </div>
 
-
-        {/* ================= Navbar End ================= */}
-
-        <div className="navbar-end gap-5">
+        {/* Navbar End */}
+        <div className="navbar-end gap-2 sm:gap-5">
 
           {/* Plan Count */}
           <Link
             href="/workerlist"
-            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white"
+            className="flex items-center gap-1 text-xs text-gray-300 hover:text-white sm:gap-2 sm:text-sm"
           >
             Plan
 
             <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#b6ff00] text-xs font-bold text-black">
               {todaysPlan.length}
             </span>
-
           </Link>
-
 
           {/* Saved Count */}
           <Link
             href="/workerlist"
-            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white"
+            className="flex items-center gap-1 text-xs text-gray-300 hover:text-white sm:gap-2 sm:text-sm"
           >
             Saved
 
             <span className="flex h-4 w-4 items-center justify-center rounded-full border border-gray-500 text-xs font-bold text-white">
               {saveLater.length}
             </span>
-
           </Link>
 
         </div>
