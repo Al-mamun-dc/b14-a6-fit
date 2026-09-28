@@ -53,6 +53,7 @@ const WorkerList = () => {
         const sortedWorkouts = [...workouts];
 
         sortedWorkouts.sort((a, b) => {
+
             // Duration
             if (sortBy === "duration") {
                 return (
@@ -103,7 +104,9 @@ const WorkerList = () => {
                 `${workout.name} marked as done!`
             );
         } else {
-            toast.success("Workout marked as done!");
+            toast.success(
+                "Workout marked as done!"
+            );
         }
     };
 
@@ -115,14 +118,16 @@ const WorkerList = () => {
         id: number,
         type: "today" | "saved"
     ) => {
+
         if (type === "today") {
+
             const workout = todaysPlan.find(
                 (item) => item.id === id
             );
 
             setTodaysPlan(
                 todaysPlan.filter(
-                    (workout) => workout.id !== id
+                    (item) => item.id !== id
                 )
             );
 
@@ -131,14 +136,16 @@ const WorkerList = () => {
                     `${workout.name} removed from today's plan!`
                 );
             }
+
         } else {
+
             const workout = saveLater.find(
                 (item) => item.id === id
             );
 
             setSaveLater(
                 saveLater.filter(
-                    (workout) => workout.id !== id
+                    (item) => item.id !== id
                 )
             );
 
@@ -164,6 +171,7 @@ const WorkerList = () => {
                 key={`${type}-${workout.id}-${index}`}
                 className="mb-3 flex flex-col items-center gap-4 rounded-xl border border-gray-800 bg-[#15171f] p-4 md:flex-row"
             >
+
                 {/* Image */}
                 <div className="h-24 w-full shrink-0 md:w-36">
                     <Image
@@ -177,21 +185,24 @@ const WorkerList = () => {
 
                 {/* Workout Details */}
                 <div className="w-full flex-1">
+
                     <h3 className="text-sm font-bold uppercase text-white">
                         {workout.name}
                     </h3>
 
-                    <p className="mt-1 text-xs text-gray-400">
-                        {workout.muscleGroups.join(", ")}
+                    {/* Equipment */}
+                    <p className="mt-1 text-xs text-gray-500">
+                        {workout.equipment}
                     </p>
 
                     <div className="mt-3 flex flex-wrap gap-3 text-xs text-gray-400">
+
                         <span>
                             ◷ {workout.duration} min
                         </span>
 
                         <span>
-                            🔥 {workout.caloriesBurned} cal
+                            🔥 {workout.caloriesBurned} kcal
                         </span>
 
                         <span>
@@ -205,12 +216,15 @@ const WorkerList = () => {
                         <span>
                             ★ {workout.rating}
                         </span>
+
                     </div>
+
                 </div>
 
                 {/* Buttons */}
-                <div className="flex shrink-0 items-center gap-2">
+                <div className="flex w-full shrink-0 flex-wrap items-center gap-2 md:w-auto">
 
+                    {/* View Details */}
                     <Link
                         href={`/workers/${workout.id}`}
                         className="btn btn-xs rounded-full border-gray-700 bg-[#20232d] text-white"
@@ -245,6 +259,7 @@ const WorkerList = () => {
                     </button>
 
                 </div>
+
             </div>
         );
     };
@@ -268,10 +283,11 @@ const WorkerList = () => {
     return (
         <div className="min-h-screen bg-[#0e0f14] text-white">
 
-            <div className="container mx-auto px-6 py-10">
+            <div className="container mx-auto px-4 py-8 sm:px-6 sm:py-10">
 
                 {/* Header */}
                 <div className="mb-6">
+
                     <h2 className="text-2xl font-bold">
                         MY PLAN
                     </h2>
@@ -279,12 +295,15 @@ const WorkerList = () => {
                     <p className="mt-2 text-xs text-gray-500">
                         Cap of five lifts for today. Finish them, then load more.
                     </p>
+
                 </div>
 
                 {/* Stats */}
-                <div className="mb-5 grid grid-cols-3 gap-4 rounded-xl border border-gray-800 bg-[#14161f] p-5">
+                <div className="mb-5 grid grid-cols-1 gap-4 rounded-xl border border-gray-800 bg-[#14161f] p-5 sm:grid-cols-3">
 
+                    {/* Exercises */}
                     <div>
+
                         <p className="text-xs text-gray-400">
                             Exercises
                         </p>
@@ -292,9 +311,12 @@ const WorkerList = () => {
                         <h2 className="mt-1 text-2xl font-bold text-lime-400">
                             {totalExercises}
                         </h2>
+
                     </div>
 
-                    <div className="border-l border-gray-800 pl-5">
+                    {/* Minutes */}
+                    <div className="border-t border-gray-800 pt-4 sm:border-l sm:border-t-0 sm:pl-5 sm:pt-0">
+
                         <p className="text-xs text-gray-400">
                             Minutes
                         </p>
@@ -302,9 +324,12 @@ const WorkerList = () => {
                         <h2 className="mt-1 text-2xl font-bold">
                             {totalMinutes}
                         </h2>
+
                     </div>
 
-                    <div className="border-l border-gray-800 pl-5">
+                    {/* Calories */}
+                    <div className="border-t border-gray-800 pt-4 sm:border-l sm:border-t-0 sm:pl-5 sm:pt-0">
+
                         <p className="text-xs text-gray-400">
                             Calories
                         </p>
@@ -312,6 +337,7 @@ const WorkerList = () => {
                         <h2 className="mt-1 text-2xl font-bold">
                             {totalCalories}
                         </h2>
+
                     </div>
 
                 </div>
@@ -319,11 +345,12 @@ const WorkerList = () => {
                 {/* Tabs + Sort */}
                 <div className="mb-4">
 
-                    <div className="flex items-center justify-between border-b border-gray-800">
+                    <div className="flex flex-col gap-4 border-b border-gray-800 sm:flex-row sm:items-center sm:justify-between">
 
                         {/* Tabs */}
                         <div className="flex gap-6">
 
+                            {/* Today's Plan */}
                             <button
                                 onClick={() =>
                                     setActiveTab("today")
@@ -337,6 +364,7 @@ const WorkerList = () => {
                                 Today&apos;s Plan
                             </button>
 
+                            {/* Saved */}
                             <button
                                 onClick={() =>
                                     setActiveTab("saved")
@@ -370,6 +398,7 @@ const WorkerList = () => {
                                     }
                                     className="h-9 w-32 cursor-pointer appearance-none rounded-lg border border-gray-700 bg-[#15171f] px-3 pr-8 text-sm text-white outline-none focus:border-lime-400"
                                 >
+
                                     <option
                                         value="duration"
                                         className="bg-[#15171f] text-white"
@@ -390,6 +419,7 @@ const WorkerList = () => {
                                     >
                                         Rating
                                     </option>
+
                                 </select>
 
                                 <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">
@@ -402,11 +432,16 @@ const WorkerList = () => {
 
                     </div>
 
-                    {/* Today's Plan */}
+                    {/* =========================
+                        Today's Plan
+                    ========================= */}
+
                     {activeTab === "today" && (
+
                         <div className="pt-4">
 
                             {sortedTodayPlan.length > 0 ? (
+
                                 sortedTodayPlan.map(
                                     (
                                         workout: iWorkout,
@@ -418,8 +453,10 @@ const WorkerList = () => {
                                             index
                                         )
                                 )
+
                             ) : (
-                                <div className="flex min-h-62.5 flex-col items-center justify-center rounded-xl border border-gray-800 text-center">
+
+                                <div className="flex min-h-62.5 flex-col items-center justify-center rounded-xl border border-gray-800 px-4 text-center">
 
                                     <h3 className="text-lg font-bold">
                                         NOTHING HERE YET
@@ -430,23 +467,30 @@ const WorkerList = () => {
                                     </p>
 
                                     <Link
-                                        href="/workers"
+                                        href="/"
                                         className="btn btn-sm mt-5 rounded-full border-none bg-lime-400 text-black"
                                     >
                                         Go to workouts
                                     </Link>
 
                                 </div>
+
                             )}
 
                         </div>
+
                     )}
 
-                    {/* Saved */}
+                    {/* =========================
+                        Saved
+                    ========================= */}
+
                     {activeTab === "saved" && (
+
                         <div className="pt-4">
 
                             {sortedSavedPlan.length > 0 ? (
+
                                 sortedSavedPlan.map(
                                     (
                                         workout: iWorkout,
@@ -458,8 +502,10 @@ const WorkerList = () => {
                                             index
                                         )
                                 )
+
                             ) : (
-                                <div className="flex min-h-62.5 flex-col items-center justify-center rounded-xl border border-gray-800 text-center">
+
+                                <div className="flex min-h-62.5 flex-col items-center justify-center rounded-xl border border-gray-800 px-4 text-center">
 
                                     <h3 className="text-lg font-bold">
                                         NOTHING HERE YET
@@ -470,16 +516,18 @@ const WorkerList = () => {
                                     </p>
 
                                     <Link
-                                        href="/workers"
+                                        href="/"
                                         className="btn btn-sm mt-5 rounded-full border-none bg-lime-400 text-black"
                                     >
                                         Go to workouts
                                     </Link>
 
                                 </div>
+
                             )}
 
                         </div>
+
                     )}
 
                 </div>

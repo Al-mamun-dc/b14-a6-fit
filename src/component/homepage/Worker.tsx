@@ -35,9 +35,9 @@ const Worker = async () => {
 
             <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
 
-                {workoutData.map((workout:iWorkout,ind:number) => {
+                {workoutData.map((workout:iWorkout) => {
                     return (<WorkerCard
-            key={ind}
+            key={workout.id}
             workout={workout}
         />
                     );

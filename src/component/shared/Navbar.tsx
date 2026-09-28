@@ -14,7 +14,7 @@ const Navbar = () => {
   const link = (
     <>
       <Link href="/">Workouts</Link>
-      <Link href="/my-plan">My Plan</Link>
+      <Link href="/workerlist">My Plan</Link>
     </>
   );
 
